@@ -179,7 +179,7 @@ module.exports = {
   getTotalOrdersCount: async (req, res) => {
     try {
       const totalOrdersCount = await models.commande.count();
-      res.status(200).json({ totalOrdersCount });
+      res.status(200).json( totalOrdersCount );
     } catch (error) {
       res.status(500).json({
         message:
