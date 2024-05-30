@@ -3,7 +3,7 @@ require("dotenv").config();
 const cron = require("node-cron");
 
 // Configuration de la connexion à la base de données local’
-const sequelizeLocal = new Sequelize(
+/*const sequelizeLocal = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
   process.env.DB_PASS,
@@ -23,7 +23,7 @@ async function testConnectionLocale() {
     console.error("Impossible de se connecter à la base de données:", error);
   }
 }
-testConnectionLocale();
+testConnectionLocale();*/
 
 const sequelizeHeroku = new Sequelize(
   process.env.DB_NAMEH,
@@ -76,7 +76,7 @@ async function testConnectionCloud() {
 testConnectionCloud();
 
 const initModels = require("../model/tables/init-models").initModels;
-const modelsLocale = initModels(sequelizeLocal, DataTypes);
+//const modelsLocale = initModels(sequelizeLocal, DataTypes);
 const modelsCloud = initModels(sequelizeCloud, DataTypes);
 
 // Fonction de synchronisation des données pour chaque modèle
