@@ -15,11 +15,11 @@ module.exports = function (sequelize, DataTypes) {
       },
       FIRSTNAME: {
         type: DataTypes.STRING(255),
-        allowNull: false,
+        allowNull: true,
       },
       LASTNAME: {
         type: DataTypes.STRING(255),
-        allowNull: false,
+        allowNull: true,
       },
       USER_MAIL: {
         type: DataTypes.STRING(255),
@@ -31,7 +31,7 @@ module.exports = function (sequelize, DataTypes) {
       },
       USER_TEL: {
         type: DataTypes.STRING(255),
-        allowNull: false,
+        allowNull: true,
       },
       USER_DATE_NAISS: {
         type: DataTypes.DATEONLY,
