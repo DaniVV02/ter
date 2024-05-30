@@ -30,54 +30,45 @@ module.exports = {
           });
     } 
   },
-  getTopSellingProduct: async (req, res) => {
-    // On vérifie d'abord si l'en-tête Authorization est présente dans la requête
-    const authHeader = req.headers["authorization"];
-    if (!authHeader) {
-      return res.status(401).send("Token d'authentification manquant");
-    }
-    jwt.verify(authHeader, KEY, { algorithm: "HS256" }, (err, decoded) => {
-      if (err) {
-        return res.status(401).send("Token d'authentification invalide");
-      }
-      // Maintenant que le token est vérifié, on peut envoyer les informations
-
-      try {
-        models.produit_vendu
-        .findAll({
-          include: [
-            {
-              model: models.produit,
-              as: "PRODUIT",
-              required: true,
-            },
-          ],
-          order: [["QUANTITE", "DESC"]],
-          limit: 1,
-        })
-        .then((result) => {
-          const formattedResult = result.map((produit_vendu) => {
-            return produit_vendu.dataValues;
-          });
-          console.table(formattedResult);
-          console.table(
-            formattedResult.map((produit_vendu) => {
-              return produit_vendu.produit[0].dataValues;
-            })
-          );
-          res.status(200).json(result);
-        })
-        .catch((error) => {
-          console.error("Error fetching top selling product:", error);
-        });
-    } catch (error) {
-      res.status(500).json({
-        message:
-          "Erreur lors de la récupération du top selling product: " + error.message,
-        });
+   
+getTopSellingProduct: async (req, res) => {
+  try {
+    console.log(`Top Selling Product =>`);
+    await models.produit
+      .findAll({
+        include: [
+          {
+            model: models.produit_vendu,
+            as: "produit_vendus",
+            attributes: [],
+            required: true,
+          },
+        ],
+        attributes: ['NOM'],
+        order: [[sequelize.col('produit_vendus.QUANTITE'), "DESC"]],
+      })
+      .then((result) => {
+        if (result.length > 0) {
+          const topProduct = result[0].dataValues;
+          console.table([topProduct]); 
+          res.status(200).json(topProduct);
+        } else {
+          res.status(404).json({ message: "No products found" });
         }
+      })
+      .catch((error) => {
+        console.error("Error fetching top selling product:", error);
+        res.status(500).json({
+          message: "Error fetching top selling product: " + error.message,
+        });
+      });
+  } catch (error) {
+    res.status(500).json({
+      message:
+        "Erreur lors de la récupération du top selling product: " + error.message,
     });
-    },
+  }
+},
     // récupérer le nombre de produits en faible stock
     getLowStockProductsCount: async (req, res) => {
         try {

@@ -61,7 +61,7 @@ module.exports = {
     Auth.selectSignUpData(
       User,
       req.body.username,
-      req.body.email,
+      req.body.email
       //req.body.user_tel
     )
       .then((user) => {
@@ -105,7 +105,7 @@ module.exports = {
 
               var token = tokenSignIn(payload, res);
 
-              res.send(token);
+              res.status(200).send(token);
               console.log(
                 "Les données ont été insérées avec succès dans la base de données."
               );
